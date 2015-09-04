@@ -3,20 +3,61 @@
     <head>
         <script src="/socket.io/socket.io.js"></script>
         <script type="text/javascript">
-            var socketio = io.connect("127.0.0.1:3333"); 
-            socketio.on("client_message", function(data) {
-                document.getElementById("chatboard").innerHTML = ("<hr/>" +
+            var socketio = io.connect("127.0.0.1:3333");
+            var username = "New user";
+            var first = true;
+
+            socketio.on('chat message', function(data) {
+                document.getElementById("chatboard").innerHTML = ("<br/>" +
                 data['message'] + document.getElementById("chatboard").innerHTML);
             });
+
+            socketio.on('user joined', function(data) {
+                console.log(data.username + ' joined');
+                document.getElementById("chatboard").innerHTML = ("<br/>" +
+                data.username + ' joined' + document.getElementById("chatboard").innerHTML);
+            });
+
+            socketio.on('user left', function(data) {
+                console.log(data.username + ' left');
+                document.getElementById("chatboard").innerHTML = ("<br/>" +
+                data.username + ' left' + document.getElementById("chatboard").innerHTML);
+            });
+
             function sendMessage() {
+
                 var msg = document.getElementById("text_message").value;
-                socketio.emit("server_message", { message : msg});
+                socketio.emit('new message', { message : msg});
             }
+
+            function setUsername() {
+            var nick = document.getElementById("nickname").value;
+            var modal = document.getElementById("openModal").value;
+
+                if(first) {
+                    socketio.emit('add user', nick);
+                    first = false;
+                }
+                modal.modal('hide');
+            }
+
         </script>
     </head>
+
     <body>
         <div id="chatboard"></div>
+        <div>
         <input type="text" id="text_message"/>
         <button onclick="sendMessage()">send</button>
+    </div>
     </body>
+
+<div id="openModal" class="modalDialog">
+    <div>
+        <p>Choose a nickname</p>
+        <input type="text" id="nickname"/>
+        <input type="button" value="Join chat" onclick="setUsername()">
+    </div>
+</div>
+
 </html>
