@@ -1,0 +1,28 @@
+* { 
+  margin: 0; padding: 0; box-sizing: border-box; 
+}
+body { 
+  font: 13px Helvetica, Arial; 
+}
+form { 
+  background: #CCC; padding: 3px; position: fixed; bottom: 0; width: 100%; 
+}
+form input { 
+  border: 0; padding: 10px; width: 90%; margin-right: .5%; 
+}
+form button { 
+  width: 9%; background: rgb(100, 150, 200); border: none; padding: 10px; 
+}
+#chatboard { 
+  list-style-type: none; margin: 20px; padding: 0; 
+}
+#chatboard li {
+ padding: 5px 10px; 
+}
+#chatboard li:nth-child(odd) { 
+  background: #eee; 
+}
+.ui-dialog.success-dialog {
+    font-family: Verdana,Arial,sans-serif;
+    font-size: .8em;
+}

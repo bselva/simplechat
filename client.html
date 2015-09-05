@@ -1,63 +1,28 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="stylesheet" type="text/css" href="style.css" ></link>
         <script src="/socket.io/socket.io.js"></script>
-        <script type="text/javascript">
-            var socketio = io.connect("127.0.0.1:3333");
-            var username = "New user";
-            var first = true;
-
-            socketio.on('chat message', function(data) {
-                document.getElementById("chatboard").innerHTML = ("<br/>" +
-                data['message'] + document.getElementById("chatboard").innerHTML);
-            });
-
-            socketio.on('user joined', function(data) {
-                console.log(data.username + ' joined');
-                document.getElementById("chatboard").innerHTML = ("<br/>" +
-                data.username + ' joined' + document.getElementById("chatboard").innerHTML);
-            });
-
-            socketio.on('user left', function(data) {
-                console.log(data.username + ' left');
-                document.getElementById("chatboard").innerHTML = ("<br/>" +
-                data.username + ' left' + document.getElementById("chatboard").innerHTML);
-            });
-
-            function sendMessage() {
-
-                var msg = document.getElementById("text_message").value;
-                socketio.emit('new message', { message : msg});
-            }
-
-            function setUsername() {
-            var nick = document.getElementById("nickname").value;
-            var modal = document.getElementById("openModal").value;
-
-                if(first) {
-                    socketio.emit('add user', nick);
-                    first = false;
-                }
-                modal.modal('hide');
-            }
-
-        </script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script src="client.js"></script>
     </head>
 
     <body>
-        <div id="chatboard"></div>
-        <div>
-        <input type="text" id="text_message"/>
-        <button onclick="sendMessage()">send</button>
-    </div>
-    </body>
-
-<div id="openModal" class="modalDialog">
+    <ul id="chatboard"></ul>
+    <form action="">
     <div>
-        <p>Choose a nickname</p>
-        <input type="text" id="nickname"/>
-        <input type="button" value="Join chat" onclick="setUsername()">
+      <input type="text" id="text_message" autocomplete="off" />
+      <button type="button" onclick="sendMessage()">Send</button>
     </div>
-</div>
+    </form>
+    <div id="dialog">
+        <p>Choose a nickname</p>
+        <input type="text" id="nickname" autocomplete="off"/>
+        <button type="button" onclick="setUsername()">Join</button>
+    </div>
+
+    </body>
 
 </html>

@@ -1,4 +1,5 @@
 var app = require('express')();
+var express = require('express');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var sqlite3 = require('sqlite3').verbose();
@@ -9,6 +10,8 @@ var exists = fs.existsSync(file);
 var users = {};
 var currentUsers = 0;
 
+app.use(express.static('public'));
+
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/client.html');
 });
@@ -18,7 +21,7 @@ io.on('connection', function(socket) {
 
     db.each("SELECT register FROM ChatHistory", function(err, row) {
       console.log(row.register);
-      io.emit('chat message',{message: row.register});
+      io.emit('chat history',{message: row.register});
     });
 
     socket.on('new message', function(data) {
